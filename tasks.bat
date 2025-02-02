@@ -1,26 +1,24 @@
 @echo off
 SETLOCAL ENABLEDELAYEDEXPANSION
-for /F %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+FOR /F %%a IN ('echo prompt $E ^| cmd') DO set "ESC=%%a"
 SET /A visible= 2
 SET /A selected=6
 Set _fBlack=[30m
-FOR /L %%i IN (0, 1, 23) DO (echo.)
+FOR /L %%i IN (0, 1, 23) DO echo.
 
 :reload
 SET count=0
 FOR /F "tokens=* USEBACKQ" %%F IN (`tasklist`) DO (
   SET var[!count!]=%%F
-  SET /a count=!count!+1
+  SET /A count=!count!+1
 )
 
 :Start
-rem cls
 ECHO %ESC%[24A%var[0]%
 ECHO %var[1]%
-rem ECHO %visible%
-set /A tmp= !visible! + 20
+SET /A tmp= !visible! + 20
 FOR /L %%i IN (%visible%, 1, %tmp%) DO (
-  call set output=%%var[%%i]%%
+  CALL SET output=%%var[%%i]%%
   if %%i EQU %selected% echo %ESC%[107m%_fBlack%!output!%ESC%[0m
   if %%i NEQ %selected% echo !output!
 )
